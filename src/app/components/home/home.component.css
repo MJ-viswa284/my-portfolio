@@ -1,0 +1,115 @@
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  height: 100%;
+}
+
+
+/* Background radial vignette */
+.bg-gradient-radial {
+  background: radial-gradient(circle at center, transparent 60%, black 100%);
+}
+
+/* Intro zoom effect */
+.intro-container {
+  animation: introZoom 1.5s ease-out forwards;
+  opacity: 0;
+}
+@keyframes introZoom {
+  0% { 
+    opacity: 0; 
+    transform: scale(1.05); /* smaller zoom, no overflow */
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+
+/* Heading animation */
+.cosmic-title {
+  animation: fadeUp 1.4s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+  text-shadow: 0 0 3px #88f, 0 0 6px #66f;
+}
+
+/* Subtitle animation */
+.cosmic-subtitle {
+  animation: fadeUp 1.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+  text-shadow: 0 0 5px #aaf, 0 0 15px #0ff;
+}
+
+/* Button entrance */
+.cosmic-btn {
+  animation: fadeUp 2.2s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Light sweep on name */
+.name-highlight {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(90deg, #5b5bff, #ffffff, #5b5bff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+}
+@keyframes shine {
+  0% { background-position: 200% center; }
+  100% { background-position: 0 center; }
+}
+
+/* Fade-up effect */
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Text pulse after typing */
+.text-pulse {
+  animation: pulseGlow 0.8s ease-in-out 2;
+}
+@keyframes pulseGlow {
+  0%, 100% { text-shadow: 0 0 10px #fff, 0 0 20px #0ff; }
+  50% { text-shadow: 0 0 20px #fff, 0 0 40px #0ff; }
+}
+/* Neon pulse after typing */
+.text-pulse {
+  animation: pulse 0.6s ease-in-out 2;
+}
+
+@keyframes pulse {
+  0%, 100% { text-shadow: 0 0 5px #0ff, 0 0 15px #0ff; }
+  50% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff; }
+}
+
+/* Light sweep reveal */
+.light-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.light-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: sweep 0.8s ease forwards;
+}
+
+@keyframes sweep {
+  100% { left: 125%; }
+}
+
+

@@ -1,0 +1,15 @@
+<!-- Background starfield canvas -->
+<canvas id="pencilCanvas" class="star-canvas"></canvas>
+
+<section class="pencilwalk-section">
+  <h2 class="cosmic-title">Pencilwalk Internship 🚀</h2>
+  <p class="cosmic-sub">Cosmic journey into my full stack dev realm</p>
+
+  <div class="tasks-grid">
+    <div *ngFor="let t of pencilwalkTasks" class="task-card">
+      <h3 class="task-title">{{ t.task }}</h3>
+      <p class="task-year">{{ t.year }}</p>
+      <p class="task-tools">{{ t.tools }}</p>
+    </div>
+  </div>
+</section>

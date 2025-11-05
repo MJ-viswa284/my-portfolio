@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Starfield canvas */
+.star-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Section content */
+.pencilwalk-section {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  color: #00ffff;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Titles */
+.cosmic-title {
+  font-size: 3rem;
+  font-weight: 800;
+  text-shadow: 0 0 20px cyan, 0 0 40px magenta;
+  margin-bottom: 1rem;
+}
+
+.cosmic-sub {
+  font-size: 1.2rem;
+  color: #a0fff0;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 10px cyan;
+}
+
+/* Tasks grid */
+.tasks-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.task-card {
+  background: rgba(0, 20, 30, 0.7);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 280px;
+  text-align: left;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+  color: #00ffff;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+}
+
+.task-card:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 0 50px rgba(0, 255, 255, 0.7);
+}
+
+/* Task texts */
+.task-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.task-year {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 0.5rem;
+}
+
+.task-tools {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Neon glow animation */
+@keyframes neonPulse {
+  0%, 100% { text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
+  50% { text-shadow: 0 0 20px #ff00ff, 0 0 40px #0ff; }
+}
+
+.task-card {
+  animation: neonPulse 3s ease-in-out infinite;
+}

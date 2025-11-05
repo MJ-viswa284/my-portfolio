@@ -1,0 +1,51 @@
+<!-- Background Video -->
+<!-- <video autoplay muted loop playsinline class="background-video">
+  <source src="assets/cosmos2.mp4" type="video/mp4" />
+  Your browser does not support HTML5 video.
+</video> -->
+<!-- <video autoplay muted loop playsinline class="background-video">
+  <source src="assets/cosmos2.mp4" type="video/mp4" />
+  Your browser does not support HTML5 video.
+</video> -->
+
+<!-- 🌌 Background gradient -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 bg-[radial-gradient(ellipse_at_center,_#0a0a14_0%,_#000_100%)]"></div>
+
+<canvas id="starCanvas"></canvas>
+
+<!-- Frontend Skills -->
+<h2 class="section-title">Frontend Skills</h2>
+<div class="skills-container">
+  <div *ngFor="let skill of frontendSkills" class="skill-card">
+    <img [src]="skill.logo" [alt]="skill.name" />
+    <span>{{ skill.name }}</span>
+  </div>
+</div>
+
+<!-- Backend Skills -->
+<h2 class="section-title">Backend Skills</h2>
+<div class="skills-container">
+  <div *ngFor="let skill of backendSkills" class="skill-card">
+    <img [src]="skill.logo" [alt]="skill.name" />
+    <span>{{ skill.name }}</span>
+  </div>
+</div>
+
+
+<!-- Tools & Platforms Section -->
+<div class="skills-section">
+  <h2 class="section-title">Tools & Platforms</h2>
+  <div class="skills-grid">
+    <div class="skill-card" *ngFor="let tool of tools">
+      <img [src]="tool.logo" [alt]="tool.name" class="skill-logo" />
+      <p>{{ tool.name }}</p>
+    </div>
+  </div>
+</div>
+
+ <button
+    (click)="goToSkills()"
+      class="mt-6 px-6 py-3 text-white text-lg rounded-xl transition-all duration-300 backdrop-blur-md bg-white/10 border border-white/20 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.6)] "
+    >
+       My skills →
+    </button>

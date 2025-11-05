@@ -1,0 +1,420 @@
+:host {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background video styling */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Three.js starfield canvas */
+.star-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Section content */
+.education-galaxy {
+  position: relative;
+  z-index: 10;
+  padding: 2rem 0;
+  color: #fff;
+}
+
+/* Timeline */
+.timeline-wrapper {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(102,153,255,0.14), rgba(153,51,255,0.06));
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+  opacity: 0;
+  animation: introAnimation 0.7s ease forwards;
+}
+.timeline-item.left { left: 0; text-align: right; }
+.timeline-item.right { left: 50%; text-align: left; }
+
+/* 🌟 Timeline Node (orb) */
+.timeline-node {
+  position: absolute;
+  top: 22px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(0,255,255,0.25), rgba(0,0,0,0.1));
+  border: 2px solid rgba(0,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  box-shadow:
+    0 0 14px rgba(0,255,255,0.4),
+    0 0 28px rgba(255,0,255,0.2),
+    inset 0 0 8px rgba(0,255,255,0.3);
+  animation: orbPulse 4s ease-in-out infinite alternate;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ✅ Proper centering */
+.timeline-item.left .timeline-node {
+  right: -28px;
+  transform: translate(50%, -20%);
+}
+.timeline-item.right .timeline-node {
+  left: -28px;
+  transform: translate(-50%, -20%);
+}
+
+/* Image inside orb */
+.timeline-node img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(0,255,255,0.6));
+  z-index: 2;
+}
+
+/* 🌈 Orb breathing glow animation */
+@keyframes orbPulse {
+  0% {
+    box-shadow:
+      0 0 8px rgba(0,255,255,0.3),
+      0 0 18px rgba(255,0,255,0.1),
+      inset 0 0 8px rgba(0,255,255,0.2);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow:
+      0 0 18px rgba(0,255,255,0.7),
+      0 0 32px rgba(255,0,255,0.4),
+      inset 0 0 15px rgba(0,255,255,0.5);
+    transform: scale(1.08);
+  }
+}
+
+.timeline-item.left .timeline-node { right: -36px; }
+.timeline-item.right .timeline-node { left: -36px; }
+
+.timeline-node img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.2));
+}
+
+/* Timeline card */
+.timeline-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 1rem;
+  border-radius: 12px;
+  max-width: 420px;
+  backdrop-filter: blur(6px);
+  color: #e6f0ff;
+  box-shadow: 0 6px 18px rgba(8,10,20,0.55);
+  margin-left: 9%;
+}
+
+/* Certifications */
+.certs-title { text-align: center; font-size: 1.2rem; color: #fff; margin-top: 2rem; }
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Combine fade-in + floating for cert cards */
+.cert-card {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 0.9rem;
+  border-radius: 10px;
+  backdrop-filter: blur(6px);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+
+  /* ✅ Combine animations */
+  animation: introAnimation 0.7s ease forwards, floatInAir 6s ease-in-out infinite alternate;
+}
+
+.cert-card img { width: 46px; height: 46px; object-fit: contain; }
+.cert-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 0 22px rgba(102,153,255,0.35);
+  border-color: rgba(102,153,255,0.8);
+}
+
+/* Intern cards */
+.interns-title { margin-top: 3rem; text-align: center; font-size: 1.2rem; color: #fff; }
+.interns-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.intern-card {
+  position: relative;
+  background: rgba(20,20,30,0.8);
+  border: 1px solid rgba(0,255,255,0.1);
+  border-radius: 18px;
+  padding: 24px;
+  width: 280px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(0,255,255,0.1);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  animation: fadeUp 0.8s ease forwards;
+  z-index: 2;
+}
+.intern-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(0,255,255,0.4);
+  border-color: rgba(0,255,255,0.6);
+}
+
+.intern-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, rgba(0,255,255,0.3), rgba(255,0,255,0.3), rgba(0,255,255,0.3));
+  animation: rotateGlow 4s linear infinite;
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.intern-info { position: relative; z-index: 1; }
+
+.intern-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 6px; }
+.intern-company { font-size: 0.9rem; opacity: 0.8; margin-bottom: 10px; }
+.intern-desc { font-size: 0.85rem; opacity: 0.8; }
+
+/* Realm portal zoom */
+.zoom-realm {
+  animation: zoomPortal 1s ease forwards;
+  z-index: 10000;
+  position: relative;
+}
+.zoom-realm::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600%;
+  height: 600%;
+  background: radial-gradient(circle, rgba(0,255,255,0.5) 0%, transparent 90%);
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  animation: rippleRealm 1s ease-out forwards;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+/* Animations */
+@keyframes zoomPortal {
+  0% { transform: scale(1) rotateY(0deg); box-shadow: 0 0 0px rgba(0,255,255,0); }
+  50% { transform: scale(1.3) rotateY(15deg); box-shadow: 0 0 50px rgba(0,255,255,0.8),0 0 100px rgba(255,0,255,0.5); }
+  100% { transform: scale(3) rotateY(45deg); opacity: 0; box-shadow: 0 0 200px rgba(0,255,255,1),0 0 300px rgba(255,0,255,0.8); }
+}
+
+@keyframes rippleRealm {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+}
+
+@keyframes fadeUp { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
+@keyframes introAnimation { from {opacity:0; transform:translateY(14px) scale(0.98);} to {opacity:1; transform:translateY(0) scale(1);} }
+@keyframes rotateGlow { 0% {transform:rotate(0deg);} 100% {transform:rotate(360deg);} }
+
+/* Glow text */
+.glow-text { text-shadow: 0 0 10px cyan,0 0 20px cyan,0 0 30px cyan; animation: pulseGlow 3s ease-in-out infinite; }
+@keyframes pulseGlow { 0%,100%{opacity:0.9;text-shadow:0 0 10px cyan,0 0 20px cyan;} 50%{opacity:1;text-shadow:0 0 20px magenta,0 0 40px cyan;} }
+
+/* Responsive tweaks */
+@media (max-width: 880px) {
+  .timeline-item { width:100%; left:0 !important; text-align:left; padding-left:4.5rem; padding-right:1rem; }
+  .timeline-item.right { left:0 !important; }
+  .timeline-node { left:0 !important; transform: translateX(-20%); }
+  .timeline-line { left:24px; }
+}
+/* Portal glow radial flare */
+.zoom-realm::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600%;
+  height: 600%;
+  background: radial-gradient(circle, rgba(0,255,255,0.5) 0%, transparent 90%);
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  animation: portalFlare 1s ease-out forwards;
+  pointer-events: none;
+  z-index: 10001;
+}
+
+/* Portal flare animation */
+@keyframes portalFlare {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+/* Stars explode effect handled in TS, CSS stays the same */
+
+/* Card zoom + glow */
+.zoom-realm {
+  animation: zoomPortal 1s ease forwards;
+  z-index: 10000;
+  position: relative;
+}
+@keyframes zoomPortal {
+  0% { transform: scale(1) rotateY(0deg); box-shadow: 0 0 0px rgba(0,255,255,0); }
+  50% { transform: scale(1.4) rotateY(15deg); box-shadow: 0 0 60px rgba(0,255,255,0.8), 0 0 120px rgba(255,0,255,0.5); }
+  100% { transform: scale(3) rotateY(45deg); opacity: 0; box-shadow: 0 0 250px rgba(0,255,255,1), 0 0 350px rgba(255,0,255,0.8); }
+}
+
+
+
+/* 🌌 Breathing glow effect for intern cards (non-conflicting) */
+.intern-card {
+  animation: idleBreathing 5s ease-in-out infinite alternate; /* gentle ambient pulse */
+}
+
+.intern-card:hover {
+  transform: scale(1.05);
+  border-color: rgba(0,255,255,0.7);
+  box-shadow: 0 0 35px rgba(0,255,255,0.5);
+  animation: hoverBreathing 2.5s ease-in-out infinite alternate;
+}
+
+/* idle breathing when not hovered */
+@keyframes idleBreathing {
+  0% {
+    box-shadow: 0 0 15px rgba(0,255,255,0.1);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(0,255,255,0.25);
+  }
+}
+
+/* stronger breathing when hovered */
+@keyframes hoverBreathing {
+  0% {
+    box-shadow:
+      0 0 20px rgba(0,255,255,0.4),
+      0 0 40px rgba(255,0,255,0.2),
+      inset 0 0 15px rgba(0,255,255,0.2);
+    transform: scale(1.04);
+  }
+  100% {
+    box-shadow:
+      0 0 40px rgba(0,255,255,0.9),
+      0 0 80px rgba(255,0,255,0.4),
+      inset 0 0 30px rgba(0,255,255,0.5);
+    transform: scale(1.06);
+  }
+}
+
+/* ensure portal overrides everything cleanly */
+.zoom-realm {
+  animation: zoomPortal 1s ease forwards !important;
+}
+
+.timeline-item {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: all 0.8s ease-out;
+}
+
+.timeline-item.left { transform: translateX(-60px) scale(0.95); }
+.timeline-item.right { transform: translateX(60px) scale(0.95); }
+
+.timeline-item.active {
+  opacity: 1;
+  transform: translateX(0) translateY(0) scale(1);
+}
+.section-title, .section-sub {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.section-sub {
+  animation-delay: 0.3s; /* stagger effect for paragraph */
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Floating effect for intern cards, timeline cards, cert cards */
+.intern-card, .timeline-card, .cert-card {
+  animation: floatInAir 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatInAir {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+  25% {
+    transform: translateY(-4px) translateX(2px) scale(1.01);
+  }
+  50% {
+    transform: translateY(-8px) translateX(-2px) scale(1.02);
+  }
+  75% {
+    transform: translateY(-4px) translateX(1px) scale(1.01);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+}

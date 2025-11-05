@@ -1,0 +1,65 @@
+<router-outlet></router-outlet>
+
+<!-- 🎧 Mini Music Toggle -->
+<button
+  (click)="toggleMusic()"
+  class="fixed top-3 left-3 z-[9999] w-8 h-8 flex items-center justify-center rounded-full
+         bg-white/10 border border-white/20 text-white backdrop-blur-md
+         hover:bg-white/20 transition duration-300 shadow-sm active:scale-90"
+  [ngClass]="{ 'music-breath': isMusicPlaying, 'text-cyan-400': isMusicPlaying }"
+  title="{{ isMusicPlaying ? 'Turn off music' : 'Turn on music' }}"
+>
+  <div class="relative w-4 h-4">
+    <!-- Volume Icon -->
+    <svg
+      *ngIf="isMusicPlaying"
+      @fadeIcon
+      xmlns="http://www.w3.org/2000/svg"
+      class="absolute inset-0 w-4 h-4"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path
+        d="M16.5 8.5a5 5 0 010 7"
+        stroke="currentColor"
+        stroke-width="1.2"
+        fill="none"
+        stroke-linecap="round"
+      />
+      <path
+        d="M19 5.5a9 9 0 010 13"
+        stroke="currentColor"
+        stroke-width="1.2"
+        fill="none"
+        stroke-linecap="round"
+      />
+    </svg>
+
+    <!-- Mute Icon -->
+    <svg
+      *ngIf="!isMusicPlaying"
+      @fadeIcon
+      xmlns="http://www.w3.org/2000/svg"
+      class="absolute inset-0 w-4 h-4"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path
+        d="M19 8l-6 8"
+        stroke="currentColor"
+        stroke-width="1.6"
+        fill="none"
+        stroke-linecap="round"
+      />
+      <path
+        d="M13 8l6 8"
+        stroke="currentColor"
+        stroke-width="1.6"
+        fill="none"
+        stroke-linecap="round"
+      />
+    </svg>
+  </div>
+</button>

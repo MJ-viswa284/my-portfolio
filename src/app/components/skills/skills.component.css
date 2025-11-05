@@ -1,0 +1,155 @@
+/* Section titles */
+.section-title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Skill container */
+.skills-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  justify-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Skill card */
+.skill-card {
+  width: 140px;
+  height: 140px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  opacity: 0;
+  animation: introAnimation 0.8s ease forwards,breathingGlow 2.5s infinite ease-in-out;
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Skill icon */
+.skill-card img {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+}
+
+.skill-card span {
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+/* Hover effect */
+.skill-card:hover {
+  transform: scale(1.08);
+  border-color: rgba(102, 153, 255, 0.8);
+  animation: introAnimation 0.8s ease forwards, 
+             breathingGlow 2.5s infinite ease-in-out,
+             breathingHover 1.8s infinite ease-in-out;
+}
+
+/* Breathing animations */
+@keyframes breathingGlow {
+  0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 35px rgba(102, 153, 255, 0.5); }
+  100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
+}
+
+@keyframes breathingHover {
+  0% { transform: scale(1.08); box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 35px rgba(102, 153, 255, 0.5); }
+  50% { transform: scale(1.12); box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), 0 0 45px rgba(102, 153, 255, 0.7); }
+  100% { transform: scale(1.08); box-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 35px rgba(102, 153, 255, 0.5); }
+}
+
+/* Intro animation */
+@keyframes introAnimation {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Background video styling */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+#starCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.skills-content {
+  position: relative;
+  z-index: 1;
+}
+/* Tools & Platforms section */
+.skills-section {
+  margin-top: 2rem;
+}
+
+.skills-section .skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* match frontend/backend size */
+  gap: 1.5rem;
+  padding: 2rem;
+  justify-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.skills-section .skill-card {
+  width: 140px;
+  height: 140px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+  opacity: 0;
+  animation: introAnimation 0.8s ease forwards, breathingGlow 2.5s infinite ease-in-out;
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.skills-section .skill-card:hover {
+  transform: scale(1.08);
+  border-color: rgba(102, 153, 255, 0.8);
+  animation: introAnimation 0.8s ease forwards, 
+             breathingGlow 2.5s infinite ease-in-out,
+             breathingHover 1.8s infinite ease-in-out;
+}
+
+/* Tool logos */
+.skills-section .skill-logo {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+}
+
+/* Tool name text - make white */
+.skills-section .skill-card p {
+  color: #fff;
+  font-size: 0.9rem;
+}

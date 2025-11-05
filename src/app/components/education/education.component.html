@@ -1,0 +1,78 @@
+<!-- 🌌 Static cosmic gradient background -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 bg-[radial-gradient(ellipse_at_center,_#0a0a14_0%,_#000_100%)]"></div>
+
+<!-- 🌠 Starfield -->
+<canvas id="starCanvas" class="star-canvas"></canvas>
+
+<section class="education-galaxy min-h-screen px-6 md:px-16 py-16 text-white relative z-10 flex flex-col items-center justify-center">
+  <div class="container mx-auto max-w-6xl text-center">
+
+    <!-- Title & Subtitle -->
+    <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 drop-shadow-lg">
+      Education & Certifications
+    </h2>
+    <p class="text-gray-300 mb-10 max-w-2xl mx-auto">
+      Learning is a journey — here are the milestones and certs I’ve earned.
+    </p>
+
+    <!-- Timeline -->
+    <div class="timeline-wrapper mb-16">
+      <div class="timeline-line" aria-hidden="true"></div>
+      <div *ngFor="let e of education; let i = index" 
+           class="timeline-item" 
+           [class.left]="i % 2 === 0" 
+           [class.right]="i % 2 === 1" 
+           [style.animationDelay]="(i * 0.12) + 's'">
+        <div class="timeline-node" tabindex="0" title="{{ e.institution }} • {{ e.year }}"></div>
+
+        <div class="timeline-card">
+          <h3 class="edu-title">{{ e.degree }}</h3>
+          <p class="edu-institution">
+            {{ e.institution }} • <span class="edu-year">{{ e.year }}</span>
+          </p>
+          <p class="edu-desc">{{ e.summary }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certifications -->
+    <h3 class="text-2xl font-semibold mb-6">Certifications</h3>
+    <div class="certs-grid mb-16">
+      <div *ngFor="let c of certs; let j = index" 
+           class="cert-card" 
+           [style.animationDelay]="(j * 0.08) + 's'">
+        <img [src]="c.logo" [alt]="c.title" />
+        <div class="cert-info">
+          <div class="cert-title">{{ c.title }}</div>
+          <div class="cert-org">{{ c.issuer }} • {{ c.year }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Internships -->
+    <h3 class="text-2xl font-semibold mb-6">Internships</h3>
+    <div class="interns-grid mb-12">
+      <div *ngFor="let i of interns; let j = index"
+           class="intern-card"
+           [style.animationDelay]="(j * 0.08) + 's'"
+           (click)="enterRealm(j)">
+        <img [src]="i.logo" [alt]="i.title" />
+        <div class="intern-info">
+          <div class="intern-title type-animate">{{ i.title }}</div>
+          <div class="intern-company glow-text">{{ i.company }} • {{ i.year }}</div>
+          <div class="intern-desc type-animate delay">{{ i.description }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🌟 Button perfectly centered -->
+    <div class="flex justify-center mt-10">
+      <button
+        (click)="goToProjects()"
+        class="px-8 py-3 text-white text-lg font-semibold rounded-xl transition-all duration-300 backdrop-blur-md bg-white/10 border border-white/20 hover:bg-white/20 hover:shadow-[0_0_25px_rgba(255,255,255,0.6)]"
+      >
+        See My Projects →
+      </button>
+    </div>
+  </div>
+</section>

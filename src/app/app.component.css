@@ -1,0 +1,22 @@
+.music-breath {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(34, 211, 238, 0.2),
+                0 0 8px rgba(34, 211, 238, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.6),
+                0 0 18px rgba(34, 211, 238, 0.8);
+    transform: scale(1.06);
+  }
+}
+
+button svg {
+  color: inherit;
+  display: block;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}

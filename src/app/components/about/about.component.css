@@ -1,0 +1,221 @@
+:host {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.about-galaxy {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+}
+
+/* Glow Animation for Titles */
+.glow-text {
+  animation: glowPulse 2.5s infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow: 
+      0 0 4px rgba(255, 255, 255, 0.5),
+      0 0 8px rgba(102, 153, 255, 0.4), /* Soft Blue */
+      0 0 16px rgba(102, 0, 255, 0.3);  /* Deep Purple */
+  }
+  100% {
+    text-shadow: 
+      0 0 6px rgba(255, 255, 255, 0.6),
+      0 0 12px rgba(153, 204, 255, 0.4), /* Light Blue */
+      0 0 20px rgba(153, 51, 255, 0.3);  /* Brighter Purple */
+  }
+}
+
+
+
+
+/* Image Hover Depth */
+.about-img {
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+  animation: imageIntro 1s ease-out forwards;
+}
+
+@keyframes imageIntro {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
+
+
+
+/* Floating Glass Card */
+/* Card intro animation */
+.float-card {
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: cardIntro 0.8s ease-out forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@keyframes cardIntro {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.floating {
+  animation: floatUpDown 4s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.float-card {
+  position: relative;
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: cardIntro 0.8s ease-out forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 🌟 Animated glowing edge border */
+.float-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(102, 153, 255, 0.4),
+    rgba(255, 153, 255, 0.4),
+    rgba(255, 255, 255, 0.2)
+  );
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: sparkleMove 5s linear infinite;
+}
+
+@keyframes sparkleMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+
+/* 💫 Shooting star orbiting smoothly around the card edges */
+.float-card::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(173, 216, 255, 0.6) 50%,
+    rgba(255, 102, 255, 0) 100%
+  );
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  animation: shootingStar 6s linear infinite;
+  filter: drop-shadow(0 0 8px #c5b3ff);
+  pointer-events: none;
+}
+
+/* ✨ Perfect edge path for the shooting star */
+@keyframes shootingStar {
+  0% {
+    top: 0%;
+    left: 0%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background: linear-gradient(90deg, #ffffff, #a6c9ff, transparent);
+  }
+  25% {
+    top: 0%;
+    left: 100%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    background: linear-gradient(90deg, #a6c9ff, #ff99ff, transparent);
+  }
+  50% {
+    top: 100%;
+    left: 100%;
+    transform: translate(-50%, -50%) rotate(180deg);
+    background: linear-gradient(90deg, #ff99ff, #ffd480, transparent);
+  }
+  75% {
+    top: 100%;
+    left: 0%;
+    transform: translate(-50%, -50%) rotate(270deg);
+    background: linear-gradient(90deg, #ffd480, #b3aaff, transparent);
+  }
+  100% {
+    top: 0%;
+    left: 0%;
+    transform: translate(-50%, -50%) rotate(360deg);
+    background: linear-gradient(90deg, #b3aaff, #ffffff, transparent);
+  }
+}
+
+
+
+

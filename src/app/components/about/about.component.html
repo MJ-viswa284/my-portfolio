@@ -1,0 +1,59 @@
+<section
+  class="about-galaxy min-h-screen flex flex-col items-center justify-center text-white px-6 md:px-16 relative overflow-hidden"
+>
+  <!-- Background Canvas -->
+  <canvas #bgCanvas class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
+  <!-- Combined heading + image -->
+  <div
+    class="relative flex items-center justify-center mb-8 about-intro"
+    style="perspective: 1000px"
+  >
+    <!-- About -->
+   <span
+  class="about-title text-6xl font-extrabold tracking-wide 
+         bg-gradient-to-r from-purple-400 via-pink-400 to-pink-300 
+         bg-clip-text text-transparent absolute z-10 -translate-x-24 top-27 
+         glow-text"
+>
+  About
+</span>
+
+    <!-- Your image -->
+    <img
+      src="assets/hero.png"
+      alt="Viswa"
+      class="rounded-2xl w-48 h-48 object-cover relative z-20 about-img shadow-lg top-4"
+    />
+
+    <!-- Me -->
+    <span
+  class="about-title text-6xl font-extrabold tracking-wide 
+         bg-gradient-to-r from-pink-300 via-pink-400 to-indigo-400 
+         bg-clip-text text-transparent absolute z-10 translate-x-24 top-27
+         glow-text"
+>
+  Me
+</span>
+  </div>
+  <!-- Text Info -->
+  <div class="float-card max-w-lg text-gray-300 z-30 relative about-text">
+    <h2 class="text-2xl font-semibold mb-4">Who I Am</h2>
+    <p class="mb-4">
+      I’m a self-driven problem solver who loves building interactive,
+      futuristic web experiences. Whether it’s Angular, React, or cloud-powered
+      apps, I bring both creativity and technical skills to the table.
+    </p>
+    <p>
+      Beyond coding, I’m inspired by cosmic aesthetics, storytelling, and
+      pushing the limits of design and performance.
+    </p>
+
+    <button
+    (click)="goToSkills()"
+      class="mt-6 px-6 py-3 text-white text-lg rounded-xl transition-all duration-300 backdrop-blur-md bg-white/10 border border-white/20 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.6)]"
+    >
+       My skills →
+    </button>
+  </div>
+</section>
