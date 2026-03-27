@@ -1,0 +1,102 @@
+﻿node.exe : npm error 
+code ERESOLVE
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (npm error cod   
+ e ERESOLVE:String)    
+ [], RemoteExcepti    
+on
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+npm error ERESOLVE 
+could not resolve
+npm error
+npm error While 
+resolving: @angular/ani
+mations@19.2.20
+npm error Found: 
+@angular/common@19.2.14
+npm error node_modules/
+@angular/common
+npm error   @angular/co
+mmon@"^19.2.0" from 
+the root project
+npm error   peer @angul
+ar/common@"19.2.14" 
+from 
+@angular/forms@19.2.14
+npm error   node_module
+s/@angular/forms
+npm error     @angular/
+forms@"^19.2.0" from 
+the root project
+npm error   5 more (@an
+gular/platform-browser,
+ ...)
+npm error
+npm error Could not 
+resolve dependency:
+npm error peer @angular
+/common@"19.2.20" from 
+@angular/animations@19.
+2.20
+npm error node_modules/
+@angular/animations
+npm error   @angular/an
+imations@"^19.2.0" 
+from the root project
+npm error
+npm error Conflicting 
+peer dependency: 
+@angular/common@19.2.20
+npm error node_modules/
+@angular/common
+npm error   peer @angul
+ar/common@"19.2.20" 
+from @angular/animation
+s@19.2.20
+npm error   node_module
+s/@angular/animations
+npm error     @angular/
+animations@"^19.2.0" 
+from the root project
+npm error
+npm error Fix the 
+upstream dependency 
+conflict, or retry
+npm error this command 
+with --force or 
+--legacy-peer-deps
+npm error to accept an 
+incorrect (and 
+potentially broken) 
+dependency resolution.
+npm error
+npm error
+npm error For a full 
+report see:
+npm error 
+C:\Users\Visveswaran M\
+AppData\Local\npm-cache
+\_logs\2026-03-27T18_50
+_39_752Z-eresolve-repor
+t.txt
+npm error A complete 
+log of this run can be 
+found in: 
+C:\Users\Visveswaran M\
+AppData\Local\npm-cache
+\_logs\2026-03-27T18_50
+_39_752Z-debug-0.log
