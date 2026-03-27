@@ -183,6 +183,15 @@ resizeCanvas(); // initial call
 
 window.addEventListener('resize', resizeCanvas);
 window.addEventListener('orientationchange', resizeCanvas);
+} // This closing brace was missing, causing the syntax error.
 
-}
+  selectedProject: any = null;
+
+  openProject(project: any) {
+    this.selectedProject = project;
+  }
+
+  closeProject() {
+    this.selectedProject = null;
+  }
 }

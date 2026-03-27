@@ -30,10 +30,11 @@
 
 
   <div class="projects-container">
-      <div
-    class="project-card relative"
-    *ngFor="let project of webProjects"
-  >
+    <div
+      class="project-card relative cursor-pointer"
+      *ngFor="let project of webProjects"
+      (click)="openProject(project)"
+    >
     <!-- LIVE BADGE -->
 <span
   *ngIf="project.isLive"
@@ -71,8 +72,9 @@
 
   <div class="projects-container">
     <div
-      class="project-card"
+      class="project-card cursor-pointer"
       *ngFor="let project of mobileProjects"
+      (click)="openProject(project)"
     >
       <img [src]="project.image" class="project-image" />
       <div class="project-info">
@@ -90,3 +92,40 @@
 
 </section>
 
+<!-- PROJECT MODAL -->
+<div
+  *ngIf="selectedProject"
+  class="fixed inset-0 z-[9999]
+         flex items-center justify-center
+         bg-black/80 backdrop-blur-md"
+  (click)="closeProject()"
+>
+  <div
+    class="w-[90%] max-w-3xl rounded-2xl
+           bg-zinc-900/95 border border-white/10
+           p-6 text-left"
+    (click)="$event.stopPropagation()"
+  >
+    <h2 class="text-2xl font-semibold mb-2 text-white">
+      {{ selectedProject.title }}
+    </h2>
+
+    <p class="text-sm text-gray-400 mb-4">
+      {{ selectedProject.description }}
+    </p>
+
+    <!-- CONTENT COMING NEXT -->
+    <div class="text-gray-300 text-sm">
+      Modal content coming next…
+    </div>
+
+    <button
+      class="mt-6 px-5 py-2 rounded-lg text-white
+             border border-white/20
+             hover:bg-white/10 transition"
+      (click)="closeProject()"
+    >
+      Close
+    </button>
+  </div>
+</div>
