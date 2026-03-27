@@ -1,5 +1,5 @@
 import { NgClass, NgFor,NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
 @Component({
@@ -16,6 +16,8 @@ export class PencilwalkInterComponent {
   private stars!: THREE.Points;
   private animationId: number | null = null;
   private starSpeed = 0.001;
+
+  constructor(private zone: NgZone) {}
 
 pencilwalkTasks = [
   {
@@ -46,10 +48,12 @@ pencilwalkTasks = [
 
 
   ngAfterViewInit(): void {
-    this.initThree();
-    this.addStars();
-    this.animateStars();
-    window.addEventListener('resize', this.onWindowResize);
+    this.zone.runOutsideAngular(() => {
+      this.initThree();
+      this.addStars();
+      this.animateStars();
+      window.addEventListener('resize', this.onWindowResize);
+    });
   }
 
   ngOnDestroy(): void {
@@ -74,13 +78,16 @@ pencilwalkTasks = [
       alpha: true,
       antialias: true
     });
+    const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(isLowSpec ? 1 : Math.min(window.devicePixelRatio, 2));
     this.renderer.setClearColor(0x000000, 0);
   }
 
   private addStars() {
     const starGeometry = new THREE.BufferGeometry();
-    const starCount = 4000;
+    const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+    const starCount = isLowSpec ? 1000 : 4000;
     const positions = new Float32Array(starCount * 3);
 
     for (let i = 0; i < starCount; i++) {

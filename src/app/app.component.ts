@@ -2,11 +2,12 @@ import { Component, NgZone } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { SoundServiceService } from './sound.service.service';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, ChatbotComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

@@ -2,7 +2,8 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  ViewChild
+  ViewChild,
+  NgZone
 } from '@angular/core';
 import { NgFor, NgIf} from '@angular/common';
 import { Router } from 'express';
@@ -18,7 +19,9 @@ import { RouterLink } from '@angular/router';
 export class ProjectsComponent implements AfterViewInit {
   @ViewChild('bgCanvas', { static: true }) bgCanvas!: ElementRef<HTMLCanvasElement>;
 
- webProjects = [
+  constructor(private zone: NgZone) {}
+
+  webProjects = [
   {
     title: 'Kavi Travels',
     description: 'Angular, TypeScript, .NET, MySQL',
@@ -74,7 +77,9 @@ mobileProjects = [
 ];
 
   ngAfterViewInit() {
-    this.startStarfield();
+    this.zone.runOutsideAngular(() => {
+      this.startStarfield();
+    });
   }
 
   startStarfield() {
@@ -85,7 +90,8 @@ mobileProjects = [
 
     const stars: any[] = [];
     const shootingStars: any[] = [];
-    const numStars = 200;
+    const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+    const numStars = isLowSpec ? 50 : 200;
 
     function randomColor() {
       const colors = ['#ffffff', '#ffe9c4', '#d4fbff'];
@@ -126,8 +132,10 @@ mobileProjects = [
         const size = Math.max(0.3, (1 - star.z / canvas.width) * star.size);
         ctx.beginPath();
         ctx.fillStyle = star.color;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = star.color;
+        if (!isLowSpec) {
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = star.color;
+        }
         ctx.arc(sx, sy, size, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -151,8 +159,10 @@ mobileProjects = [
         ctx.lineTo(s.x + s.length, s.y + s.length / 3);
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = s.size;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#fff';
+        if (!isLowSpec) {
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = '#fff';
+        }
         ctx.stroke();
 
         s.x += s.speed;

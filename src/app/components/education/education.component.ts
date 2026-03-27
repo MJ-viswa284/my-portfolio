@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NgFor , NgIf } from '@angular/common';
 import * as THREE from 'three';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class EducationComponent {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private zone: NgZone) {}
 
   education = [
     {
@@ -84,12 +84,14 @@ export class EducationComponent {
   private parallaxFactor = 0.05;
 
   ngAfterViewInit(): void {
-    this.initThree();
-    this.addStars();
-    this.animateStars();
-    window.addEventListener('resize', this.onWindowResize);
-    window.addEventListener('mousemove', this.onMouseMove);
-    window.addEventListener('touchmove', this.onTouchMove);
+    this.zone.runOutsideAngular(() => {
+      this.initThree();
+      this.addStars();
+      this.animateStars();
+      window.addEventListener('resize', this.onWindowResize);
+      window.addEventListener('mousemove', this.onMouseMove);
+      window.addEventListener('touchmove', this.onTouchMove);
+    });
   }
 
   ngOnDestroy(): void {
@@ -126,7 +128,9 @@ closeCert() {
       alpha: true,
       antialias: true,
     });
+    const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(isLowSpec ? 1 : Math.min(window.devicePixelRatio, 2));
     this.renderer.setClearColor(0x000000, 0);
   }
 
@@ -134,7 +138,8 @@ closeCert() {
   const starGeometry = new THREE.BufferGeometry();
 
   // 🌌 Super dense & rich galaxy
-  const starCount = 20000;
+  const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+  const starCount = isLowSpec ? 2000 : 20000;
   const positions = new Float32Array(starCount * 3);
   const opacities = new Float32Array(starCount);
 

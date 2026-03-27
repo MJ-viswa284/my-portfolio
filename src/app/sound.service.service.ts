@@ -8,7 +8,7 @@ export class SoundServiceService {
 
   constructor() {
     this.sounds['click'] = new Audio('assets/mouseclick.mp3');
-    this.sounds['hover'] = new Audio('assets/hover.mp3');
+    // this.sounds['hover'] = new Audio('assets/hover.mp3');
     this.sounds['type'] = new Audio('assets/biotype.wav');
 
     for (const key in this.sounds) {

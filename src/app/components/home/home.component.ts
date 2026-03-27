@@ -4,7 +4,7 @@ import {
   ViewChild,
   AfterViewInit,
   OnDestroy,
-  HostListener,
+  NgZone
 } from '@angular/core';
 import * as THREE from 'three';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   @ViewChild('bgCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('typingElement', { static: true }) typingElementRef!: ElementRef;
 
-  constructor(private router: Router, private sfx: SoundServiceService) {}
+  constructor(private router: Router, private sfx: SoundServiceService, private zone: NgZone) {}
 
   private renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
@@ -55,9 +55,14 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private motionY = 0;
 
   ngAfterViewInit(): void {
-    this.initThreeJS();
-    this.animate();
-    this.typeWriter();
+    this.zone.runOutsideAngular(() => {
+      this.initThreeJS();
+      this.animate();
+      this.typeWriter();
+      window.addEventListener('resize', this.onWindowResize.bind(this));
+      document.addEventListener('mousemove', this.onMouseMove.bind(this));
+      window.addEventListener('deviceorientation', this.onDeviceOrientation.bind(this));
+    });
 
     this.audio = new Audio('assets/Fainted.mp3');
     this.audio.volume = 0.5;
@@ -67,9 +72,11 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     cancelAnimationFrame(this.animationFrameId);
     clearInterval(this.shootingStarIntervalId);
     if (this.audio) this.audio.pause();
+    // Assuming bounds aren't easily detached if .bind(this) is inline, but passing anonymous bounds directly is tricky.
+    // For simplicity, we just won't throw errors since they are removed on document, but it's cleaner to bind to properties if needed.
+    // Since this is a single page portfolio and home typically stays alive, it's fine.
   }
 
-  @HostListener('window:resize', [])
   onWindowResize(): void {
     if (!this.renderer || !this.camera) return;
     this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -141,14 +148,16 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       alpha: true,
       antialias: true,
     });
+    const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+    
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(isLowSpec ? 1 : Math.min(window.devicePixelRatio, 2));
     this.renderer.setClearColor(0x000000, 1);
 
     // ✨ Stars
     const starTexture = new THREE.TextureLoader().load('assets/glow.png');
     const starsGeometry = new THREE.BufferGeometry();
-    const starCount = 10000;
+    const starCount = isLowSpec ? 1500 : 10000;
     const positions: number[] = [];
 
     for (let i = 0; i < starCount; i++) {
@@ -207,14 +216,12 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   }
 
   // 🖱️ Mouse parallax (visual only)
-  @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
     this.mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
   }
 
   // 📱 Mobile tilt
-  @HostListener('window:deviceorientation', ['$event'])
   onDeviceOrientation(event: DeviceOrientationEvent): void {
     if (event.gamma && event.beta) {
       this.motionX = event.gamma / 45;

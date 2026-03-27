@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, NgZone } from '@angular/core';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { NgFor } from '@angular/common';
@@ -37,42 +37,46 @@ export class SkillComponent implements OnInit, AfterViewInit, OnDestroy {
   private renderer!: THREE.WebGLRenderer;
   private stars!: THREE.Points;
 
-  constructor(private router: Router) {}
+  private animationId!: number;
+
+  constructor(private router: Router, private zone: NgZone) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.initThree();
-    this.addStars();
-    this.animateStars();
+    this.zone.runOutsideAngular(() => {
+      this.initThree();
+      this.addStars();
+      this.animateStars();
 
-    window.addEventListener('mousemove', this.onMouseMove);
-    window.addEventListener('resize', () => this.onWindowResize());
+      window.addEventListener('mousemove', this.onMouseMove);
+      window.addEventListener('resize', this.onWindowResize);
 
-    // Handle mobile device tilt motion (with permission)
-    if (typeof DeviceOrientationEvent !== 'undefined' &&
-        typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-      const btn = document.createElement('button');
-      btn.textContent = 'Enable Motion';
-      Object.assign(btn.style, {
-        position: 'fixed', bottom: '20px', left: '50%',
-        transform: 'translateX(-50%)', zIndex: '10000',
-        padding: '12px 18px', background: 'rgba(255,255,255,0.1)',
-        color: '#fff', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '8px'
-      });
-      document.body.appendChild(btn);
-
-      btn.onclick = () => {
-        (DeviceOrientationEvent as any).requestPermission().then((response: string) => {
-          if (response === 'granted') {
-            window.addEventListener('deviceorientation', this.onDeviceOrientation);
-            btn.remove();
-          }
+      // Handle mobile device tilt motion (with permission)
+      if (typeof DeviceOrientationEvent !== 'undefined' &&
+          typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+        const btn = document.createElement('button');
+        btn.textContent = 'Enable Motion';
+        Object.assign(btn.style, {
+          position: 'fixed', bottom: '20px', left: '50%',
+          transform: 'translateX(-50%)', zIndex: '10000',
+          padding: '12px 18px', background: 'rgba(255,255,255,0.1)',
+          color: '#fff', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '8px'
         });
-      };
-    } else {
-      window.addEventListener('deviceorientation', this.onDeviceOrientation);
-    }
+        document.body.appendChild(btn);
+
+        btn.onclick = () => {
+          (DeviceOrientationEvent as any).requestPermission().then((response: string) => {
+            if (response === 'granted') {
+              window.addEventListener('deviceorientation', this.onDeviceOrientation);
+              btn.remove();
+            }
+          });
+        };
+      } else {
+        window.addEventListener('deviceorientation', this.onDeviceOrientation);
+      }
+    });
   }
 
   private initThree() {
@@ -90,12 +94,15 @@ export class SkillComponent implements OnInit, AfterViewInit, OnDestroy {
       canvas: document.getElementById('starCanvas') as HTMLCanvasElement,
       alpha: true
     });
+    const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(isLowSpec ? 1 : Math.min(window.devicePixelRatio, 2));
   }
 
 private addStars() {
   const starGeometry = new THREE.BufferGeometry();
-  const starCount = 5000;
+  const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+  const starCount = isLowSpec ? 1000 : 5000;
   const positions = new Float32Array(starCount * 3);
   const colors = new Float32Array(starCount * 3);
   const color = new THREE.Color();
@@ -132,7 +139,7 @@ private addStars() {
 }
 
 private animateStars = () => {
-  requestAnimationFrame(this.animateStars);
+  this.animationId = requestAnimationFrame(this.animateStars);
   const elapsed = performance.now() * 0.001;
 
   const positions = (this.stars.geometry as THREE.BufferGeometry).attributes['position'] as THREE.BufferAttribute;
@@ -224,18 +231,20 @@ private animateStars = () => {
     });
   };
 
-  private onWindowResize() {
+  private onWindowResize = () => {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  };
 
   goToSkills() {
     this.router.navigate(['/edu']);
   }
 
   ngOnDestroy(): void {
+    if (this.animationId) cancelAnimationFrame(this.animationId);
     window.removeEventListener('mousemove', this.onMouseMove);
     window.removeEventListener('deviceorientation', this.onDeviceOrientation);
+    window.removeEventListener('resize', this.onWindowResize);
   }
 }

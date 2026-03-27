@@ -5,7 +5,7 @@ import {
   OnDestroy,
   ViewChild,
   AfterViewInit,
-  HostListener
+  NgZone
 } from '@angular/core';
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('bgCanvas', { static: true }) bgCanvas!: ElementRef<HTMLCanvasElement>;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private zone: NgZone) {}
 
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
@@ -34,7 +34,10 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
   private targetY = 0;
 
   ngOnInit(): void {
-    this.initScene();
+    this.zone.runOutsideAngular(() => {
+      this.initScene();
+      document.addEventListener('mousemove', this.onMouseMove.bind(this));
+    });
   }
 
   ngAfterViewInit(): void {
@@ -71,8 +74,10 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
       canvas: this.bgCanvas.nativeElement,
       antialias: true
     });
+    const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(isLowSpec ? 1 : Math.min(window.devicePixelRatio, 2));
 
     const loader = new THREE.TextureLoader();
     loader.load('assets/galaxy.jpg', (texture) => {
@@ -85,7 +90,8 @@ export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private addStars() {
   const starGeometry = new THREE.BufferGeometry();
-  const starCount = 3000;
+  const isLowSpec = window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4);
+  const starCount = isLowSpec ? 800 : 3000;
   const positions = new Float32Array(starCount * 3);
 
   for (let i = 0; i < starCount; i++) {
@@ -120,7 +126,6 @@ positions[i * 3 + 2] = (Math.random() - 0.5) * 1500;
 
 
   // 🖱️ Track mouse movement
-  @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
     this.mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
