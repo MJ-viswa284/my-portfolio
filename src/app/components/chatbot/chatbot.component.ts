@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import emailjs from '@emailjs/browser';
 
+import { environment } from '../../../environments/environment';
+
 interface ChatMessage {
   text: string;
   sender: 'bot' | 'user';
@@ -26,7 +28,7 @@ export class ChatbotComponent implements OnInit {
   messages: ChatMessage[] = [];
   userInput = '';
 
-  private API_KEY = 'AIzaSyB50CM0Frb2KOz4fx-BxQwHFfmahGqAtmA';
+  private API_KEY = environment.geminiApiKey;
   private genAI: any;
   private chatSession: any;
 
@@ -75,9 +77,9 @@ export class ChatbotComponent implements OnInit {
       };
 
       const model = this.genAI.getGenerativeModel({ 
-        model: 'gemini-flash-latest',
+        model: 'gemini-2.5-flash',
         tools: [sendEmailTool as any],
-        systemInstruction: `You are Marshell, an AI assistant for Viswa's developer portfolio. Viswa is currently a working Full Stack Developer at E2O Technologies, and formerly worked at Pencil Walk. He knows Angular, .NET, ReactJS, Node.js, MongoDB, MySQL, Three.js, and Tailwind CSS. Built: On-Call Acting Driver App, E-commerce, CRM Systems, Kavi Travels. Be professional and concise. IMPORTANT: NEVER disclose Viswa's salary or personal financial details under any circumstances. If the user wants to send an email, politely ask for their name, email address, and message. DO NOT use the sendEmail tool until you have collected all three pieces of information.`
+        systemInstruction: `You are Marshell, a super friendly, energetic, and casual AI buddy for Viswa's developer portfolio. You love hyping up Viswa! Viswa is an awesome Full Stack Developer at E2O Technologies, and formerly at Pencil Walk. He rocks at Angular, .NET, ReactJS, Node.js, MongoDB, MySQL, Three.js, and Tailwind CSS. He built cool stuff like the On-Call Acting Driver App, E-commerce sites, CRM Systems, and Kavi Travels. Chat like a close friend, use emojis, keep it light, fun, and conversational! Never sound like a boring robot. IMPORTANT: NEVER disclose Viswa's salary or personal financial details under any circumstances. If the user wants to send an email or hire him, enthusiastically ask for their name, email address, and message. DO NOT use the sendEmail tool until you have collected all three pieces of information.`
       });
       this.chatSession = model.startChat({
         history: []
@@ -140,7 +142,7 @@ export class ChatbotComponent implements OnInit {
        if (error?.message?.includes('429')) {
          this.messages.push({ text: "I'm receiving too many messages right now. Please wait a moment and try again.", sender: 'bot' });
        } else {
-         this.messages.push({ text: "Sorry, I'm having trouble connecting to my brain right now.", sender: 'bot' });
+         this.messages.push({ text: `Sorry, I'm having trouble connecting to my brain right now. Error: ${error?.message || 'Unknown error'}`, sender: 'bot' });
        }
     } finally {
       this.isTyping = false;
