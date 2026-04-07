@@ -179,15 +179,18 @@ private animateStars = () => {
   const alphas = this.stars.geometry.attributes['alpha'] as THREE.BufferAttribute;
   const starMat = this.stars.material as THREE.PointsMaterial;
 
-  // 🌠 Twinkle & glow shimmer
+  const isMobile = window.innerWidth < 768;
   const baseOpacity = 0.85;
-  const flickerSpeed = 2.5;
 
-  for (let i = 0; i < alphas.count; i++) {
-    const flicker = Math.sin(time * flickerSpeed + i * 0.7) * 0.3 + 0.7;
-    alphas.setX(i, flicker);
+  // 🌠 Twinkle & glow shimmer - disable per-vertex calculation on mobile
+  if (!isMobile) {
+    const flickerSpeed = 2.5;
+    for (let i = 0; i < alphas.count; i++) {
+      const flicker = Math.sin(time * flickerSpeed + i * 0.7) * 0.3 + 0.7;
+      alphas.setX(i, flicker);
+    }
+    alphas.needsUpdate = true;
   }
-  alphas.needsUpdate = true;
 
   // Soft pulsing brightness (like cosmic energy)
   starMat.opacity = baseOpacity + Math.sin(time * 1.5) * 0.1;
@@ -232,7 +235,7 @@ private animateStars = () => {
     this.router.navigate(['/pro']);
   }
 
-  // 🌌 Portal / realm animation (unchanged)
+  // 🌌 Portal / realm animation (Optimized for Mobile)
   enterRealm(index: number) {
     const card = document.querySelectorAll('.intern-card')[index] as HTMLElement;
     const canvas = document.getElementById('starCanvas') as HTMLCanvasElement;
@@ -248,7 +251,6 @@ private animateStars = () => {
     const originalSpeed = this.starSpeed;
     this.starSpeed = 0.05;
 
-    const positions = (this.stars.geometry.attributes['position'] as THREE.BufferAttribute).array as Float32Array;
     const explosionAmount = 300;
 
     const animatePortal = () => {
@@ -262,13 +264,14 @@ private animateStars = () => {
           elapsed += dt;
           
           this.stars.rotation.y += 0.07 * timeScale;
-          for (let i = 0; i < positions.length; i += 3) {
-            const factor = Math.sin((elapsed / 1000) * Math.PI) * explosionAmount * timeScale;
-            positions[i] += (positions[i] / 1000) * factor;
-            positions[i + 1] += (positions[i + 1] / 1000) * factor;
-          }
-          (this.stars.geometry.attributes['position'] as THREE.BufferAttribute).needsUpdate = true;
+          
+          // ✨ Optimized: Use scale instead of looping over all vertices manually
+          const factor = Math.sin((elapsed / 1000) * Math.PI) * explosionAmount * timeScale;
+          const scaleMultiplier = 1 + (factor / 15000);
+          this.stars.scale.multiplyScalar(scaleMultiplier);
+
           this.renderer.render(this.scene, this.camera);
+          
           if (elapsed < 1000) requestAnimationFrame(portalAnimation);
           else resolve();
         };
@@ -280,6 +283,10 @@ private animateStars = () => {
       card.classList.remove('zoom-realm');
       canvas.style.filter = 'brightness(1) blur(0)';
       this.starSpeed = originalSpeed;
+      
+      // Reset scale after animation
+      this.stars.scale.set(1, 1, 1);
+      
       if (index === 0) this.router.navigate(['/pencil']);
       else if (index === 1) this.router.navigate(['/e2o']);
     });

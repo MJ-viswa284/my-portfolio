@@ -15,6 +15,15 @@ export class AppComponent {
   private audio!: HTMLAudioElement;
   isMusicPlaying = false;
 
+  // Custom Cursor References
+  private cursorOutline!: HTMLElement | null;
+  
+  private mouseX = 0;
+  private mouseY = 0;
+  private outlineX = 0;
+  private outlineY = 0;
+  private isMobile = false;
+
   constructor(
     private zone: NgZone,
     private sfx: SoundServiceService,
@@ -26,8 +35,55 @@ export class AppComponent {
     this.audio = new Audio('assets/Fainted.mp3');
     this.audio.loop = true;
     this.audio.volume = 0.4;
+
+    this.isMobile = window.innerWidth < 768;
   }
 
+  ngAfterViewInit(): void {
+    if (!this.isMobile) {
+      this.cursorOutline = document.querySelector('.custom-cursor-outline') as HTMLElement;
+      
+      this.zone.runOutsideAngular(() => {
+        window.addEventListener('mousemove', this.onMouseMove.bind(this));
+        
+        // Handle hovering over clickable elements to expand the cursor
+        document.body.addEventListener('mouseover', (e: MouseEvent) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('button, a, .cursor-pointer')) {
+            if (this.cursorOutline) this.cursorOutline.style.transform += ' scale(1.5)';
+            if (this.cursorOutline) this.cursorOutline.style.backgroundColor = 'rgba(0, 255, 255, 0.1)';
+          }
+        });
+        
+        document.body.addEventListener('mouseout', (e: MouseEvent) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('button, a, .cursor-pointer')) {
+            if (this.cursorOutline) this.cursorOutline.style.transform = `translate(${this.outlineX}px, ${this.outlineY}px) translate(-50%, -50%) scale(1)`;
+            if (this.cursorOutline) this.cursorOutline.style.backgroundColor = 'transparent';
+          }
+        });
+
+        this.animateCursor();
+      });
+    }
+  }
+
+  private onMouseMove(e: MouseEvent) {
+    this.mouseX = e.clientX;
+    this.mouseY = e.clientY;
+  }
+
+  private animateCursor = () => {
+    // Smooth trailing calculation for the outline
+    this.outlineX += (this.mouseX - this.outlineX) * 0.15;
+    this.outlineY += (this.mouseY - this.outlineY) * 0.15;
+
+    if (this.cursorOutline) {
+      this.cursorOutline.style.transform = `translate(${this.outlineX}px, ${this.outlineY}px) translate(-50%, -50%)`;
+    }
+
+    requestAnimationFrame(this.animateCursor);
+  };
   // ─── Back Button ──────────────────────────────────────────────────────────
   goBack(): void {
     this.location.back();

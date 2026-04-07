@@ -110,13 +110,24 @@
       {{ selectedProject.title }}
     </h2>
 
+    <p class="text-sm text-blue-400 font-medium mb-1" *ngIf="selectedProject.role">
+      {{ selectedProject.role }}
+    </p>
+
     <p class="text-sm text-gray-400 mb-4">
       {{ selectedProject.description }}
     </p>
 
     <!-- CONTENT COMING NEXT -->
-    <div class="text-gray-300 text-sm">
-      Modal content coming next…
+    <div class="text-gray-300 text-sm max-h-64 overflow-y-auto pr-2 custom-scroll">
+      <ul class="list-disc list-inside space-y-2 pointer-events-auto" *ngIf="selectedProject.highlights?.length > 0">
+        <li *ngFor="let highlight of selectedProject.highlights" class="leading-relaxed">
+          {{ highlight }}
+        </li>
+      </ul>
+      <p *ngIf="!selectedProject.highlights || selectedProject.highlights.length === 0" class="italic text-gray-500">
+        More details coming soon...
+      </p>
     </div>
 
     <button
