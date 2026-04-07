@@ -25,7 +25,7 @@
          p-6 text-center transition
          hover:bg-white/10 hover:border-white/30">
         <p class="text-sm text-gray-400">Email</p>
-        <p class="mt-2 font-medium group-hover:text-cyan-300">
+        <p class="mt-2 font-medium group-hover:text-white">
           {{ email }}
         </p>
       </a>
@@ -38,22 +38,39 @@
          p-6 text-center transition
          hover:bg-white/10 hover:border-white/30 w-full max-w-[240px]">
         <p class="text-sm text-gray-400">{{ linkedIn.label }}</p>
-        <p class="mt-2 font-medium group-hover:text-cyan-300">
+        <p class="mt-2 font-medium group-hover:text-white">
           {{ linkedIn.text }}
         </p>
       </a>
 
 
       <!-- Resume -->
-      <a [href]="resume.url" download class="group rounded-xl border border-white/10
+      <div 
+        (mousedown)="startDownload()"
+        (mouseup)="stopDownload()"
+        (mouseleave)="stopDownload()"
+        (touchstart)="startDownload()"
+        (touchend)="stopDownload()"
+        style="-webkit-touch-callout: none;"
+        class="group relative overflow-hidden cursor-pointer rounded-xl border border-white/10
          bg-white/5 backdrop-blur-md
          p-6 text-center transition
-         hover:bg-white/10 hover:border-white/30 w-full max-w-[240px]">
-        <p class="text-sm text-gray-400">{{ resume.label }}</p>
-        <p class="mt-2 font-medium group-hover:text-cyan-300">
-          {{ resume.text }}
-        </p>
-      </a>
+         hover:bg-white/10 hover:border-white/30 w-full max-w-[240px] select-none">
+         
+         <!-- Progress Background Layer -->
+         <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-white/20 to-white/10 z-0 pointer-events-none"
+              [style.width.%]="downloadProgress"></div>
+
+        <div class="relative z-10 flex flex-col items-center pointer-events-none">
+          <p class="text-sm text-gray-400 group-hover:text-white transition-colors">
+            {{ downloadSuccess ? 'Success!' : (downloadProgress > 0 ? 'Hold to Download...' : resume.label) }}
+          </p>
+          <p class="mt-2 font-medium group-hover:text-white transform transition-transform" 
+             [class.scale-110]="downloadProgress > 0 && !downloadSuccess">
+            {{ downloadSuccess ? 'Downloaded!' : resume.text }}
+          </p>
+        </div>
+      </div>
 
 
     </div>
