@@ -3,7 +3,8 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  NgZone
+  NgZone,
+  OnDestroy
 } from '@angular/core';
 import { NgFor, NgIf} from '@angular/common';
 import { Router } from 'express';
@@ -16,8 +17,11 @@ import { RouterLink } from '@angular/router';
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.css']
 })
-export class ProjectsComponent implements AfterViewInit {
+export class ProjectsComponent implements AfterViewInit, OnDestroy {
   @ViewChild('bgCanvas', { static: true }) bgCanvas!: ElementRef<HTMLCanvasElement>;
+
+  private animationId: number | null = null;
+  private resizeCanvasFn: (() => void) | null = null;
 
   constructor(private zone: NgZone) {}
 
@@ -26,32 +30,64 @@ export class ProjectsComponent implements AfterViewInit {
     title: 'Kavi Travels',
     description: 'Angular, TypeScript, .NET, MySQL',
     image: 'assets/project-kavi.png',
-    route: '/kavi'
+    route: '/kavi',
+    role: '',
+    highlights: []
   },
   {
     title: 'CRM System (Company Project)',
     description: 'Angular, .NET, MySQL',
     image: 'assets/project-crm.png',
-    route: '/crm'
+    route: '/crm',
+    role: '',
+    highlights: []
   },
   {
     title: 'On-Call Acting Driver (Live)',
     description: 'Angular, .NET, MySQL',
     image: 'assets/project-driver.png',
     route: '/driver',
-    isLive: true
+    isLive: true,
+    role: 'Full Stack Developer | Angular • .NET Web API • MAUI • MySQL',
+    highlights: [
+      'Developed a driver booking system with web and mobile applications used in production',
+      'Built booking workflow including trip creation, driver mapping, and fare calculation',
+      'Developed REST APIs for trip lifecycle, driver updates, and admin dashboards',
+      'Worked on both frontend (Angular) and backend (.NET Web API) modules',
+      'Developed MAUI mobile screens for booking, trip tracking, and user actions',
+      'Integrated APIs for real-time data flow and seamless user experience',
+      'Optimized performance, fixed bugs, and improved UI consistency across modules'
+    ]
   },
   {
     title: 'E-Commerce Web App',
     description: 'Angular, .NET',
     image: 'assets/project-ecommerce.png',
-    route: '/ecommerce'
+    route: '/ecommerce',
+    role: 'Full Stack Developer | Angular • .NET 8 • MySQL • MAUI',
+    highlights: [
+      'Built complete coupon and deals module with dynamic generation and discount logic',
+      'Implemented full order lifecycle including placement, cancellation, and return management',
+      'Integrated courier partner (Delhivery) APIs for shipment creation, tracking, and delivery updates',
+      'Developed AWB tracking system for real-time shipment monitoring',
+      'Worked on both frontend and backend development',
+      'Designed product pages inspired by Amazon-style UI/UX'
+    ]
   },
   {
     title: 'Dynamic CRM (Ongoing)',
     description: 'Angular, .NET, Azure',
     image: 'assets/project-dynamic-crm.png',
-    route: '/dynamic-crm'
+    route: '/dynamic-crm',
+    role: 'Backend Developer | .NET Web API • MySQL',
+    highlights: [
+      'Developed Expense module with dynamic fields',
+      'Built Task management system with flexible field structure Implemented dynamic reporting system (date-wise, monthly, yearly)',
+      'Created bulk import features with item-level calculations',
+      'Developed batch history tracking with stock reduction logic',
+      'Built reusable APIs across multiple modules (quotation, invoice, product, etc.)',
+      'Designed dynamic analytics system using configurable fields'
+    ]
   }
 ];
 
@@ -60,19 +96,38 @@ mobileProjects = [
     title: 'On-Call Acting Driver – User App',
     description: '.NET MAUI',
     image: 'assets/mobile-driver.png',
-    route: '/mobile-driver'
+    route: '/mobile-driver',
+    role: 'Full Stack Developer | Angular • .NET Web API • MAUI • MySQL',
+    highlights: [
+      'Developed a driver booking system with web and mobile applications used in production',
+      'Developed MAUI mobile screens for booking, trip tracking, and user actions',
+      'Integrated APIs for real-time data flow and seamless user experience'
+    ]
   },
   {
     title: 'E-Commerce Mobile App',
     description: '.NET MAUI',
     image: 'assets/mobile-ecommerce.png',
-    route: '/mobile-ecommerce'
+    route: '/mobile-ecommerce',
+    role: 'Full Stack Developer | Angular • .NET 8 • MySQL • MAUI',
+    highlights: [
+      'Developed mobile features including product listing and user interaction screens',
+      'Designed product pages inspired by Amazon-style UI/UX'
+    ]
   },
   {
     title: 'Influencer App',
     description: '.NET MAUI',
     image: 'assets/mobile-influencer.png',
-    route: '/mobile-influencer'
+    route: '/mobile-influencer',
+    role: 'Mobile Developer | .NET MAUI',
+    highlights: [
+      'Developed mobile features for an influencer discovery platform',
+      'Built filtering and discovery screens for selecting artists',
+      'Implemented artist selection and rejection logic',
+      'Designed responsive UI for smooth navigation',
+      'Integrated backend APIs for dynamic data updates'
+    ]
   }
 ];
 
@@ -175,25 +230,35 @@ mobileProjects = [
       }
     }
 
-    function animate() {
+    const animate = () => {
       drawStars();
       drawShootingStars();
-      requestAnimationFrame(animate);
+      this.animationId = requestAnimationFrame(animate);
     }
 
    animate();
    
 
- const resizeCanvas = () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-};
+  this.resizeCanvasFn = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
 
-resizeCanvas(); // initial call
+  this.resizeCanvasFn(); // initial call
 
-window.addEventListener('resize', resizeCanvas);
-window.addEventListener('orientationchange', resizeCanvas);
-} // This closing brace was missing, causing the syntax error.
+  window.addEventListener('resize', this.resizeCanvasFn);
+  window.addEventListener('orientationchange', this.resizeCanvasFn);
+  }
+
+  ngOnDestroy() {
+    if (this.animationId !== null) {
+      cancelAnimationFrame(this.animationId);
+    }
+    if (this.resizeCanvasFn) {
+      window.removeEventListener('resize', this.resizeCanvasFn);
+      window.removeEventListener('orientationchange', this.resizeCanvasFn);
+    }
+  }
 
   selectedProject: any = null;
 

@@ -145,11 +145,13 @@ private animateStars = () => {
   const positions = (this.stars.geometry as THREE.BufferGeometry).attributes['position'] as THREE.BufferAttribute;
   const colors = (this.stars.geometry as THREE.BufferGeometry).attributes['color'] as THREE.BufferAttribute;
   const material = this.stars.material as THREE.PointsMaterial;
+  
+  const isMobile = window.innerWidth < 768;
 
-  // 🚀 Forward movement (fast depth illusion)
+  // 🚀 Forward movement
   for (let i = 0; i < positions.count; i++) {
     let z = positions.getZ(i);
-    z += 7.5; // faster travel
+    z += isMobile ? 3.0 : 7.5; // smoother/slower on mobile
     if (z > 600) {
       z = -8500;
       positions.setX(i, (Math.random() - 0.5) * 4200);
@@ -159,36 +161,28 @@ private animateStars = () => {
   }
   positions.needsUpdate = true;
 
-  // 🌟 Sparkling + glowing like cosmic dust
-  for (let i = 0; i < colors.count; i++) {
-    const basePhase = elapsed * 4 + i * 0.2;
-    const flicker = Math.sin(basePhase * (Math.random() * 5 + 1)) * 0.9 + Math.random() * 0.4;
-
-    // 💥 occasional flash — random starburst sparkle
-    let burst = 0;
-    if (Math.random() < 0.015) {
-      burst = Math.random() * 2.5; // brighter flashes
+  // 🌟 Skip heavy color calculations on mobile to save CPU and Battery
+  if (!isMobile) {
+    const tempColor = new THREE.Color();
+    for (let i = 0; i < colors.count; i++) {
+      const basePhase = elapsed * 4 + i * 0.2;
+      const flicker = Math.sin(basePhase * (Math.random() * 5 + 1)) * 0.9 + Math.random() * 0.4;
+      let burst = Math.random() < 0.015 ? Math.random() * 2.5 : 0;
+      const hue = 0.55 + Math.sin(elapsed * 1.2 + i * 0.03) * 0.25;
+      const lightness = Math.min(1, 0.8 + flicker * 0.5 + burst);
+      
+      tempColor.setHSL(hue, 1.0, lightness); // avoid instantiating new Color() per star per frame!
+      colors.setXYZ(i, tempColor.r, tempColor.g, tempColor.b);
     }
-
-    // 🌈 Soft color shift — neon blue to magenta glow
-    const hue = 0.55 + Math.sin(elapsed * 1.2 + i * 0.03) * 0.25;
-
-    // 💫 Layered brightness (adds “sparkle depth”)
-    const lightness = Math.min(1, 0.8 + flicker * 0.5 + burst);
-
-    const color = new THREE.Color();
-    color.setHSL(hue, 1.0, lightness);
-    colors.setXYZ(i, color.r, color.g, color.b);
+    colors.needsUpdate = true;
   }
-  colors.needsUpdate = true;
 
   // 🌠 Material pulse shimmer (like twinkling field)
   material.opacity = 0.85 + Math.sin(elapsed * 6) * 0.4;
 
-  // ✨ Subtle random scale flicker for more sparkle depth
-  material.size = 5 + Math.sin(elapsed * 10) * 2.5;
+  // ✨ Subtle random scale flicker
+  material.size = isMobile ? 4 : 5 + Math.sin(elapsed * 10) * 2.5;
 
-  // 🌌 Slow, dreamy drift
   this.stars.rotation.y += 0.0004;
   this.stars.rotation.x += 0.0001;
 
