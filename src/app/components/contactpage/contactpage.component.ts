@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import emailjs from '@emailjs/browser';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-contactpage',
@@ -11,6 +12,11 @@ import emailjs from '@emailjs/browser';
   styleUrl: './contactpage.component.css'
 })
 export class ContactpageComponent {
+
+  downloadProgress = 0;
+  isDownloading = false;
+  downloadInterval: any;
+  downloadSuccess = false;
 
 
   constructor() {
@@ -31,7 +37,7 @@ export class ContactpageComponent {
   resume = {
     label: 'Resume',
     text: 'Download PDF',
-    url: 'assets/My-Professional-resume.pdf'
+    url: 'assets/My-current-professional-resume.pdf'
   };
 
   // ===== Form Model =====
@@ -40,6 +46,60 @@ export class ContactpageComponent {
     email: '',
     message: ''
   };
+
+  startDownload() {
+    if(this.downloadSuccess) return;
+    this.isDownloading = true;
+    this.downloadInterval = setInterval(() => {
+      this.downloadProgress += 2; // Fills in roughly 750ms
+      if (this.downloadProgress >= 100) {
+        this.finishDownload();
+      }
+    }, 15);
+  }
+
+  stopDownload() {
+    if(this.downloadSuccess) return;
+    this.isDownloading = false;
+    clearInterval(this.downloadInterval);
+    
+    // Smoothly animate back to 0
+    const returnInterval = setInterval(() => {
+      this.downloadProgress -= 4;
+      if (this.downloadProgress <= 0 || this.isDownloading) {
+        this.downloadProgress = 0;
+        clearInterval(returnInterval);
+      }
+    }, 10);
+  }
+
+  finishDownload() {
+    clearInterval(this.downloadInterval);
+    this.isDownloading = false;
+    this.downloadProgress = 100;
+    this.downloadSuccess = true;
+    
+    // Confetti pop
+    confetti({
+      particleCount: 150,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ['#00ffff', '#ffffff', '#888888']
+    });
+
+    // Programmatically trigger the download
+    const link = document.createElement('a');
+    link.href = this.resume.url;
+    link.download = 'My-current-professional-resume.pdf';
+    link.click();
+    link.remove();
+    
+    // Reset after success
+    setTimeout(() => {
+      this.downloadSuccess = false;
+      this.downloadProgress = 0;
+    }, 3000);
+  }
 
 
   isSending = false;
