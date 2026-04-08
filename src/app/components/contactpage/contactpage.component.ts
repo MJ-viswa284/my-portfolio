@@ -128,6 +128,18 @@ export class ContactpageComponent {
     console.log('SUCCESS!', response.status, response.text);
     this.isSuccess = true;
     this.contactForm = { name: '', email: '', message: '' };
+
+    // Confetti pop on successful email send
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.7 },
+      colors: ['#00ffff', '#ffffff', '#888888']
+    });
+    // Reset success state after 5 seconds
+    setTimeout(() => {
+      this.isSuccess = false;
+    }, 5000);
   })
   .catch((error) => {
     console.log('FAILED...', error);

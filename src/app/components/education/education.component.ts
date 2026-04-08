@@ -50,20 +50,18 @@ export class EducationComponent {
       title: 'Full Stack Developer Intern',
       company: 'Pencil walk Pvt Ltd',
       year: '2022',
-      description: 'Built responsive web apps using ReactJS, Node.js, and MongoDB.',
-      logo: 'assets/intern1.png'
+      description: 'Built responsive web apps using ReactJS, Node.js, and MongoDB.'
     },
     {
       title: 'Full Stack Developer Intern',
       company: 'E2O Technologies',
       year: '2025-present',
-      description: 'Built responsive web apps using AngularJS, .NET, and MySql.',
-      logo: 'assets/intern1.png'
+      description: 'Built responsive web apps using AngularJS, .NET, and MySql.'
     }
   ];
 
   certs = [
-    { title: 'Fullstack Web Development', issuer: 'Kalvi Institute', year: '2025', logo: 'assets/shivam.png',image: 'assets/shivam.png'  },
+    { title: 'Fullstack Web Development', issuer: 'Kalvi Institute', year: '2025', logo: 'assets/stackdev.webp', image: 'assets/stackdev.webp' },
   ];
 
   private scene!: THREE.Scene;

@@ -32,9 +32,9 @@ export class ChatbotComponent implements OnInit {
   private genAI: any;
   private chatSession: any;
 
-  private primaryModel = 'gemini-2.5-flash';
-  private secondaryModel = 'gemini-2.0-flash';
-  private currentModel = 'gemini-2.5-flash';
+  private primaryModel = 'gemini-2.0-flash';
+  private secondaryModel = 'gemini-pro-latest';
+  private currentModel = 'gemini-2.0-flash';
   private rateLimitResetTime = 0;
 
   ngOnInit() {
@@ -178,7 +178,8 @@ export class ChatbotComponent implements OnInit {
               await this.handleMessageCore(text);
             } catch (fallbackError: any) {
               console.error('Fallback error:', fallbackError);
-              this.messages.push({ text: "I'm receiving too many messages right now and my backup brain is also busy. Please wait a moment and try again.", sender: 'bot' });
+              const errMsg = fallbackError?.message || 'Unknown fallback error';
+              this.messages.push({ text: `I'm receiving too many messages right now and my backup brain is also busy. (Error: ${errMsg})`, sender: 'bot' });
             }
          } else {
             this.messages.push({ text: "I'm receiving too many messages right now. Please wait a moment and try again.", sender: 'bot' });
