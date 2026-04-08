@@ -1,11 +1,10 @@
-import { NgClass, NgFor,NgIf } from '@angular/common';
 import { Component, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
 @Component({
   selector: 'app-pencilwalk-inter',
   standalone: true,
-  imports: [NgClass],
+  imports: [],
   templateUrl: './pencilwalk-inter.component.html',
   styleUrls: ['./pencilwalk-inter.component.css']
 })
@@ -122,37 +121,9 @@ pencilwalkTasks = [
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   };
 
-  previewOpen = false;
-
-  openPreview() {
-    this.previewOpen = true;
-  }
-
-  closePreview() {
-    this.previewOpen = false;
-  }
 
 
-images = [
-  'assets/shivam.png',
-  'assets/pencil/pencil-preview.png',
-  'assets/shivam.png'
-];
 
-currentIndex = 0;
-direction: 'left' | 'right' = 'right';
-
-nextImage() {
-  this.direction = 'right';
-  this.currentIndex =
-    (this.currentIndex + 1) % this.images.length;
-}
-
-prevImage() {
-  this.direction = 'left';
-  this.currentIndex =
-    (this.currentIndex - 1 + this.images.length) % this.images.length;
-}
 
 
 }

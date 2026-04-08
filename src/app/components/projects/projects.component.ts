@@ -29,7 +29,7 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
   {
     title: 'Kavi Travels',
     description: 'Angular, TypeScript, .NET, MySQL',
-    image: 'assets/project-kavi.png',
+    image: 'assets/kavi.webp',
     route: '/kavi',
     role: '',
     highlights: []
@@ -37,7 +37,7 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
   {
     title: 'CRM System (Company Project)',
     description: 'Angular, .NET, MySQL',
-    image: 'assets/project-crm.png',
+    image: 'assets/crm.webp',
     route: '/crm',
     role: '',
     highlights: []
@@ -45,7 +45,7 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
   {
     title: 'On-Call Acting Driver (Live)',
     description: 'Angular, .NET, MySQL',
-    image: 'assets/project-driver.png',
+    image: 'assets/oncall.webp',
     route: '/driver',
     isLive: true,
     role: 'Full Stack Developer | Angular • .NET Web API • MAUI • MySQL',
@@ -62,7 +62,7 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
   {
     title: 'E-Commerce Web App',
     description: 'Angular, .NET',
-    image: 'assets/project-ecommerce.png',
+    image: 'assets/ecom.webp',
     route: '/ecommerce',
     role: 'Full Stack Developer | Angular • .NET 8 • MySQL • MAUI',
     highlights: [
@@ -77,7 +77,7 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
   {
     title: 'Dynamic CRM (Ongoing)',
     description: 'Angular, .NET, Azure',
-    image: 'assets/project-dynamic-crm.png',
+    image: 'assets/dynacrm.webp',
     route: '/dynamic-crm',
     role: 'Backend Developer | .NET Web API • MySQL',
     highlights: [
@@ -88,6 +88,21 @@ export class ProjectsComponent implements AfterViewInit, OnDestroy {
       'Built reusable APIs across multiple modules (quotation, invoice, product, etc.)',
       'Designed dynamic analytics system using configurable fields'
     ]
+  },
+  {
+    title: 'HRMS',
+    description: 'Angular, .NET, MySQL',
+    image: 'assets/shift.webp',
+    route: '/hrms',
+    role: '',
+    highlights: [
+      'Designed and implemented a Shift Management System supporting weekly-off configuration, shift timing rules, and employee shift assignments.',
+      'Developed features for bulk shift assignment and monthly/week-based scheduling for employees.',
+      'Implemented working hours calculation, including break time and buffer time handling based on shift configurations.',
+      'Integrated shift logic with attendance workflows to ensure accurate time tracking and compliance.',
+      'Handled real-world business rules such as shift-based week-offs and flexible scheduling.',
+      'Collaborated with team members on leave and attendance module integration.'
+    ]
   }
 ];
 
@@ -95,7 +110,7 @@ mobileProjects = [
   {
     title: 'On-Call Acting Driver – User App',
     description: '.NET MAUI',
-    image: 'assets/mobile-driver.png',
+    image: 'assets/oncallmobile.webp',
     route: '/mobile-driver',
     role: 'Full Stack Developer | Angular • .NET Web API • MAUI • MySQL',
     highlights: [
@@ -107,18 +122,19 @@ mobileProjects = [
   {
     title: 'E-Commerce Mobile App',
     description: '.NET MAUI',
-    image: 'assets/mobile-ecommerce.png',
+    image: 'assets/ecommobile.webp',
     route: '/mobile-ecommerce',
     role: 'Full Stack Developer | Angular • .NET 8 • MySQL • MAUI',
     highlights: [
       'Developed mobile features including product listing and user interaction screens',
-      'Designed product pages inspired by Amazon-style UI/UX'
+      'Designed product pages inspired by Amazon-style UI/UX',
+      'create complete order management after user payment done including cancellation and tracking'
     ]
   },
   {
     title: 'Influencer App',
     description: '.NET MAUI',
-    image: 'assets/mobile-influencer.png',
+    image: 'assets/infulencemobile.webp',
     route: '/mobile-influencer',
     role: 'Mobile Developer | .NET MAUI',
     highlights: [
